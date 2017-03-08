@@ -4,9 +4,8 @@ import Album.Types as Album
 import Album.View as Album
 import Array exposing (Array)
 import Dialog
-import Events exposing (onEnter)
+import Exts.Maybe as Maybe
 import Html exposing (..)
-import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Types exposing (..)
@@ -18,7 +17,8 @@ root model =
     div []
         [ bootstrap
         , container
-            [ inputForm model
+            [ Html.form [ onSubmit Query ]
+                [ inputForm model ]
             , case model.results of
                 Nothing ->
                     p [] [ text "Type a query." ]
@@ -41,11 +41,10 @@ root model =
 inputForm : Model -> Html Msg
 inputForm model =
     input
-        [ type' "text"
+        [ type_ "text"
         , placeholder "Search for an album..."
         , value model.query
         , onInput QueryChange
-        , onEnter Query
         ]
         []
 

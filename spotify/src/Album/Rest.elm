@@ -16,4 +16,4 @@ decodeAlbum =
 
 decodeImage : Decoder Image
 decodeImage =
-    "url" := string
+    field "url" string

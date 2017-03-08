@@ -28,6 +28,7 @@ showDialog model =
     if model.showDetails then
         Just
             { closeMessage = Just ToggleDetails
+            , containerClass = Nothing
             , header = Just (h2 [] [ text model.name ])
             , body = Just (div [] [ code [] [ text (toString model) ] ])
             , footer = Nothing
