@@ -1,6 +1,5 @@
 module Tree exposing (..)
 
-
 type Tree a
     = Empty
     | Node a (Tree a) (Tree a)
@@ -10,7 +9,45 @@ empty : Tree a
 empty =
     Empty
 
+sum t =
+    case t of
+      Empty -> 0        
+      Node x Empty Empty -> x
+      Node x l r -> x + sum l + sum r
 
+flatten t =
+    case t of
+      Empty -> []
+      Node x Empty Empty -> [x]
+      Node x l r -> [x] ++ flatten l ++ flatten r
+
+contains e t =
+    case t of 
+      Empty -> False
+      Node x Empty Empty -> e == x
+      Node x l r ->
+        if e == x
+        then True
+        else
+            contains e l || contains e r
+
+-- based on foldr example here:
+-- https://hackage.haskell.org/package/base-4.9.1.0/docs/Data-Foldable.html
+-- 
+-- basic list foldr here:
+-- https://wiki.haskell.org/Fold
+-- foldr f z []     = z 
+-- foldr f z (x:xs) = f x (foldr f z xs) 
+fold f z t =
+    case t of
+        Empty -> z
+        Node x Empty Empty -> f x z
+        Node x l r -> fold f (f x (fold f z r)) l
+
+-- point-free style
+fsum = fold (+) 0       
+fflatten = fold (::) []
+fcontains e = fold (\a b -> b || (a == e) ) False
 
 -- singleton : a -> Tree a
 -- insert : comparable -> Tree comparable -> Tree comparable
